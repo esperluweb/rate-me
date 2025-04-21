@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, Container, CssBaseline, Stack } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Box, Container, CssBaseline, Stack, IconButton, Drawer, List, ListItem, ListItemText, useMediaQuery } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import esperluLogo from './assets/logo.png';
 import { useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import PublicForm from './pages/PublicForm';
 import { supabase } from './supabaseClient';
 
 function App() {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useMediaQuery('(max-width:600px)');
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   // Récupère l'utilisateur connecté à l'initialisation et écoute les changements
   useEffect(() => {
@@ -29,7 +34,6 @@ function App() {
   const menuItems = user
     ? [
         { label: 'Dashboard', path: '/dashboard' },
-        { label: 'Mes formulaires', path: '/dashboard' },
         { label: 'Déconnexion', action: handleLogout },
       ]
     : [
@@ -40,27 +44,49 @@ function App() {
   return (
     <>
       <CssBaseline />
-      <AppBar position="static" color="default" elevation={1} sx={{ bgcolor: 'background.paper' }}>
+      <AppBar position="static" elevation={1} sx={{ bgcolor: '#1B263B', color: '#fff' }}>
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 700, letterSpacing: 1, color: 'primary.main', cursor: 'pointer' }} onClick={() => navigate('/')}>RateMe</Typography>
-          <Stack direction="row" spacing={1}>
-            {menuItems.map((item, idx) =>
-              item.action ? (
-                <Button key={idx} color="inherit" onClick={item.action} sx={{ fontWeight: location.pathname === '/dashboard' && item.label.includes('Dashboard') ? 700 : 400 }}>
-                  {item.label}
-                </Button>
-              ) : (
-                <Button key={idx} color="inherit" onClick={() => navigate(item.path)} sx={{ fontWeight: location.pathname === item.path ? 700 : 400 }}>
-                  {item.label}
-                </Button>
-              )
-            )}
-          </Stack>
+          <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, cursor: 'pointer' }} onClick={() => navigate('/') }>
+            <Box component="img" src={esperluLogo} alt="Logo Esperluweb" sx={{ height: 36, mr: 2, borderRadius: 1, bgcolor: '#fff' }} />
+            <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: 1, color: '#fff' }}>Donner mon avis</Typography>
+          </Box>
+          {isMobile ? (
+            <>
+              <IconButton edge="end" sx={{ color: '#fff' }} aria-label="menu" onClick={() => setDrawerOpen(true)}>
+                <MenuIcon />
+              </IconButton>
+              <Drawer anchor="right" open={drawerOpen} onClose={() => setDrawerOpen(false)}>
+                <Box sx={{ width: 220, bgcolor: '#1B263B', height: '100%', color: '#fff' }} role="presentation" onClick={() => setDrawerOpen(false)}>
+                  <List>
+                    {menuItems.map((item, idx) => (
+                      <ListItem button key={idx} onClick={item.action ? item.action : () => navigate(item.path)} sx={{ '&:hover': { bgcolor: '#415A77' } }}>
+                        <ListItemText primary={item.label} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              </Drawer>
+            </>
+          ) : (
+            <Stack direction="row" spacing={1}>
+              {menuItems.map((item, idx) =>
+                item.action ? (
+                  <Button key={idx} sx={{ color: '#fff', fontWeight: location.pathname === '/dashboard' && item.label.includes('Dashboard') ? 700 : 400, '&:hover': { bgcolor: '#415A77' } }} onClick={item.action}>
+                    {item.label}
+                  </Button>
+                ) : (
+                  <Button key={idx} sx={{ color: '#fff', fontWeight: location.pathname === item.path ? 700 : 400, '&:hover': { bgcolor: '#415A77' } }} onClick={() => navigate(item.path)}>
+                    {item.label}
+                  </Button>
+                )
+              )}
+            </Stack>
+          )}
         </Toolbar>
       </AppBar>
       <Box
         sx={{
-          minHeight: 'calc(100vh - 64px - 40px)', // header + footer
+          minHeight: 'calc(100vh - 64px - 56px)', // header + footer
           width: '100vw',
           display: 'flex',
           alignItems: 'center',
@@ -85,15 +111,19 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/form/:public_link" element={<PublicForm />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Box>
         </Container>
       </Box>
-      <Box component="footer" sx={{ width: '100vw', height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', bgcolor: 'background.paper', boxShadow: 1, position: 'fixed', bottom: 0, left: 0, zIndex: 1200 }}>
-        <Typography variant="body2" color="text.secondary">
-          Développé avec 🍵 et ❤️ par EsperluWeb
-        </Typography>
+      <Box component="footer" sx={{ width: '100vw', bgcolor: '#1B263B', color: '#fff', py: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 0 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box component="img" src={esperluLogo} alt="Logo Esperluweb" sx={{ height: 28, mr: 1, borderRadius: 1, bgcolor: '#fff' }} />
+          <Typography variant="body2" sx={{ color: '#fff', textAlign: 'center', ml: 1 }}>
+            Développé avec 🍵 et ❤️ par EsperluWeb
+          </Typography>
+        </Box>
       </Box>
     </>
   );
