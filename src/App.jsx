@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container, CssBaseline, Stack, IconButton, Drawer, List, ListItem, ListItemText, useMediaQuery } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import esperluLogo from './assets/logo.png';
+import InstallBanner from './components/InstallBanner';
 import { useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
@@ -117,6 +118,7 @@ function App() {
           </Box>
         </Container>
       </Box>
+      <InstallBanner />
       <Box component="footer" sx={{ width: '100vw', bgcolor: '#1B263B', color: '#fff', py: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 0 }}>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Box component="img" src={esperluLogo} alt="Logo Esperluweb" sx={{ height: 28, mr: 1, borderRadius: 1, bgcolor: '#fff' }} />
