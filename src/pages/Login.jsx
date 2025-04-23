@@ -18,7 +18,7 @@ export default function Login() {
   };
 
   return (
-    <Box mt={6} component="form" onSubmit={handleLogin}>
+    <Box mt={6} component="form" onSubmit={handleLogin} sx={{ width: '100%', maxWidth: 420, mx: 'auto', p: { xs: 2, sm: 3 } }}>
       <Typography variant="h4" gutterBottom>Connexion</Typography>
       <TextField
         label="Email"

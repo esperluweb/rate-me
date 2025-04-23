@@ -101,7 +101,7 @@ function App() {
           <Box
             sx={{
               width: '100%',
-              maxWidth: { xs: '100%', md: 1280 },
+              maxWidth: location.pathname === '/login' || location.pathname === '/signup' ? 420 : { xs: '100%', md: 1280 },
               bgcolor: 'background.paper',
               p: { xs: 2, sm: 4 },
               borderRadius: 3,

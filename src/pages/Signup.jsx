@@ -44,7 +44,7 @@ export default function Signup() {
   };
 
   return (
-    <Box mt={6} component="form" onSubmit={handleSignup}>
+    <Box mt={6} component="form" onSubmit={handleSignup} sx={{ width: '100%', maxWidth: 420, mx: 'auto', p: { xs: 2, sm: 3 } }}>
       <Typography variant="h4" gutterBottom>Inscription</Typography>
       <TextField
         label="Nom"
