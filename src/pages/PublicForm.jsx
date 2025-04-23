@@ -69,8 +69,11 @@ export default function PublicForm() {
 
   return (
     <>
-      <Box maxWidth={480} mx="auto" mt={6} p={3} bgcolor="background.paper" borderRadius={2} boxShadow={2}>
-        <Typography variant="h4" gutterBottom>{form.title}</Typography>
+      <Box width="100%" maxWidth={1280} mx="auto" mt={{ xs: 2, md: 8 }} p={{ xs: 1, sm: 4, md: 6 }} bgcolor="background.paper" borderRadius={3} boxShadow={3}>
+
+
+
+        <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '2rem', md: '2.5rem' } }}>{form.title}</Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             label="Votre email (facultatif)"
@@ -81,15 +84,17 @@ export default function PublicForm() {
             type="email"
           />
           {form.questions.map((q, idx) => (
-            <TextField
-              key={idx}
-              label={q}
-              value={answers[idx]}
-              onChange={e => handleAnswerChange(idx, e.target.value)}
-              fullWidth
-              margin="normal"
-              required
-            />
+            <Box key={idx} mb={2}>
+              <Typography variant="subtitle1" sx={{ mb: 0.5, fontWeight: 500 }}>{q}</Typography>
+              <TextField
+                value={answers[idx]}
+                onChange={e => handleAnswerChange(idx, e.target.value)}
+                fullWidth
+                margin="none"
+                required
+                placeholder=""
+              />
+            </Box>
           ))}
           {form.note_label && (
             <Box mt={2} mb={1}>

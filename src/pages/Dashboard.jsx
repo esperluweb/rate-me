@@ -118,15 +118,15 @@ function Dashboard() {
 
 
   return (
-    <Box mt={4}>
+    <Box mt={{ xs: 2, md: 6 }}>
       <Typography variant="h4" gutterBottom>Mes formulaires</Typography>
-      <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)} sx={{ mb: 2 }}>
+      <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpen(true)} sx={{ mb: 3, fontSize: { xs: '1rem', md: '1.1rem' } }}>
         Nouveau formulaire
       </Button>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{ maxWidth: { xs: '100%', md: 900 }, mx: 'auto' }}>
         {forms.map(form => (
-          <Paper key={form.id} elevation={2} sx={{ p: 2, mb: 2, borderRadius: 3 }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, mb: 0.5 }}>{form.title}</Typography>
+          <Paper key={form.id} elevation={2} sx={{ p: { xs: 2, sm: 3, md: 4 }, mb: 2, borderRadius: 3, maxWidth: { xs: '100%', md: 800 }, mx: 'auto' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '1.1rem', md: '1.3rem' } }}>{form.title}</Typography>
             <Stack direction="row" alignItems="center" spacing={1} mb={1}>
               <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-all' }}>
                 Lien public :
@@ -180,7 +180,7 @@ function Dashboard() {
               </Box>
             ))}
             <Button onClick={handleAddQuestion} disabled={questions.length >= 5}>Ajouter une question</Button>
-            <TextField label="Label de la note (optionnel)" fullWidth margin="normal" value={noteLabel} onChange={e => setNoteLabel(e.target.value)} />
+            <TextField label="Titre pour demander la note sur 5 (optionnel)" fullWidth margin="normal" value={noteLabel} onChange={e => setNoteLabel(e.target.value)} />
 
             <Box mt={2} mb={1}>
               <Typography variant="subtitle1" sx={{ mb: 1 }}>Liens d'avis externes (Google, Trustpilot...)</Typography>

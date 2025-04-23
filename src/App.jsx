@@ -8,6 +8,8 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import PublicForm from './pages/PublicForm';
+import NotFound from './pages/NotFound';
+import Changelog from './pages/Changelog';
 import { supabase } from './supabaseClient';
 
 function App() {
@@ -95,25 +97,28 @@ function App() {
           background: 'linear-gradient(135deg,rgb(53, 56, 59) 0%,rgb(31, 34, 40) 100%)',
         }}
       >
-        <Container maxWidth="sm" sx={{ p: 0 }}>
+        <Container maxWidth={false} sx={{ p: 0 }}>
           <Box
             sx={{
               width: '100%',
+              maxWidth: { xs: '100%', md: 1280 },
               bgcolor: 'background.paper',
               p: { xs: 2, sm: 4 },
               borderRadius: 3,
               boxShadow: 3,
-              maxWidth: 420,
               mx: 'auto',
             }}
           >
             <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
+              {/* Redirige '/' vers /dashboard si connecté */}
+              <Route path="/" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
+              <Route path="/signup" element={user ? <Navigate to="/dashboard" replace /> : <Signup />} />
+              <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <Login />} />
+              <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" replace />} />
               <Route path="/form/:public_link" element={<PublicForm />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
+              <Route path="/changelog" element={<Changelog />} />
+              {/* Toutes les autres routes : 404 si non connecté, sinon redirige vers dashboard */}
+              <Route path="*" element={user ? <Navigate to="/dashboard" replace /> : <NotFound />} />
             </Routes>
           </Box>
         </Container>
@@ -124,6 +129,8 @@ function App() {
           <Box component="img" src={esperluLogo} alt="Logo Esperluweb" sx={{ height: 28, mr: 1, borderRadius: 1, bgcolor: '#fff' }} />
           <Typography variant="body2" sx={{ color: '#fff', textAlign: 'center', ml: 1 }}>
             Développé avec 🍵 et ❤️ par EsperluWeb
+            {' '}|{' '}
+            <a href="/changelog" style={{ color: '#fff', textDecoration: 'underline', marginLeft: 8 }}>Changelog</a>
           </Typography>
         </Box>
       </Box>
